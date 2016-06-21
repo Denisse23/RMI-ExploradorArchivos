@@ -5,11 +5,7 @@
         <group>
             <file>file:/C:/Users/Oscar%20Sanchez/Documents/NetBeansProjects/RMI-ExploradorArchivos-master/ExploradorArchivos/src/exploradorarchivos/DataServer.java</file>
             <file>file:/C:/Users/Oscar%20Sanchez/Documents/NetBeansProjects/RMI-ExploradorArchivos-master/ExploradorArchivos/src/exploradorarchivos/DataServer1.java</file>
-            <file>file:/C:/Users/Oscar%20Sanchez/Documents/NetBeansProjects/RMI-ExploradorArchivos-master/ExploradorArchivos/src/exploradorarchivos/GUI.java</file>
-            <file>file:/C:/Users/Oscar%20Sanchez/Documents/NetBeansProjects/RMI-ExploradorArchivos-master/ExploradorArchivos/src/exploradorarchivos/ServerNode.java</file>
-            <file>file:/C:/Users/Oscar%20Sanchez/Documents/NetBeansProjects/RMI-ExploradorArchivos-master/ExploradorArchivos/src/exploradorarchivos/DataServer2.java</file>
-            <file>file:/C:/Users/Oscar%20Sanchez/Documents/NetBeansProjects/RMI-ExploradorArchivos-master/ExploradorArchivos/src/exploradorarchivos/ReplicaDataServer2.java</file>
-            <file>file:/C:/Users/Oscar%20Sanchez/Documents/NetBeansProjects/RMI-ExploradorArchivos-master/ExploradorArchivos/src/exploradorarchivos/ReplicaDataServer1.java</file>
+            <file>file:/C:/Users/Oscar%20Sanchez/Documents/NetBeansProjects/RMI-ExploradorArchivos-master/ExploradorArchivos/src/exploradorarchivos/ServerNodeImpl.java</file>
         </group>
     </open-files>
 </project-private>

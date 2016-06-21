@@ -5,18 +5,23 @@
  */
 package exploradorarchivos;
 
+import com.sun.org.apache.bcel.internal.util.Repository;
 import java.io.EOFException;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.rmi.AccessException;
+import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreePath;
@@ -131,8 +136,22 @@ public class ServerNodeImpl extends UnicastRemoteObject implements ServerNode{
         }catch(Exception ex3){
         
         }
-        //codigo para guardar en el data node
         
+        try {
+            Registry repositorio = LocateRegistry.getRegistry("", 1100);
+            DataServer mensaje;
+            try {
+                mensaje = (DataServer)repositorio.lookup("DataServer1");
+                mensaje.createFile(Text, nombre);
+            } catch (NotBoundException ex) {
+                Logger.getLogger(ServerNodeImpl.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (AccessException ex) {
+                Logger.getLogger(ServerNodeImpl.class.getName()).log(Level.SEVERE, null, ex);
+            }
+                    
+            
+        } catch (RemoteException ex) {        
+        }
        return true;
     }
 
@@ -194,7 +213,7 @@ public class ServerNodeImpl extends UnicastRemoteObject implements ServerNode{
     }
      private static void iniciar(){
         
-       String host = "169.254.235.211";//"192.168.56.1"
+       String host = "";//"192.168.56.1"
         try {
             // create on port 1099
             Registry registry = LocateRegistry.createRegistry(1099);
