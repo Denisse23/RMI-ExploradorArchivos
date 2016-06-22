@@ -5,7 +5,6 @@
  */
 package exploradorarchivos;
 
-import com.sun.org.apache.bcel.internal.util.Repository;
 import java.io.EOFException;
 import java.io.File;
 import java.io.FileInputStream;
@@ -20,6 +19,7 @@ import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -120,8 +120,11 @@ public class ServerNodeImpl extends UnicastRemoteObject implements ServerNode{
         //sincroniza el servidor con la vista en el cliente
         TreePath camino = find((DefaultMutableTreeNode)directorio.getRoot(),padre);
         DefaultMutableTreeNode selectedNode = ((DefaultMutableTreeNode)camino.getLastPathComponent());
-        int servidor = 1;
-        selectedNode.add(new DefaultMutableTreeNode(new NodoArbol(nombre,servidor,'a')));
+         Random R = new Random();        
+        int random = R.nextInt(2);
+        NodoArbol neo = new NodoArbol(nombre,random,'a');
+        System.out.println(random);
+        selectedNode.add(new DefaultMutableTreeNode(neo));
         new File("directorio.bin").delete();
         File archivo = null;
         try{
@@ -138,11 +141,29 @@ public class ServerNodeImpl extends UnicastRemoteObject implements ServerNode{
         }
         
         try {
-            Registry repositorio = LocateRegistry.getRegistry("", 1100);
-            DataServer mensaje;
+            Registry repositorio1;
+            Registry repositorio2;
+            if(random == 0){
+                repositorio1 = LocateRegistry.getRegistry("", 1100);
+                repositorio2 = LocateRegistry.getRegistry("", 1101);
+            }else{
+                repositorio1 = LocateRegistry.getRegistry("", 1102);
+                repositorio2 = LocateRegistry.getRegistry("", 1103);
+            }
+            DataServer mensaje1;
+            DataServer mensaje2;
             try {
-                mensaje = (DataServer)repositorio.lookup("DataServer1");
-                mensaje.createFile(Text, nombre);
+                if(random == 0){
+                    mensaje1 = (DataServer)repositorio1.lookup("DataServer1");
+                    mensaje1.createFile(Text, nombre);
+                    mensaje2 = (DataServer)repositorio2.lookup("ReplicaDataServer1");
+                    mensaje2.createFile(Text, nombre);
+                }else{
+                    mensaje1 = (DataServer)repositorio1.lookup("DataServer2");
+                    mensaje1.createFile(Text, nombre);
+                    mensaje2 = (DataServer)repositorio2.lookup("ReplicaDataServer2");
+                    mensaje2.createFile(Text, nombre);
+                }
             } catch (NotBoundException ex) {
                 Logger.getLogger(ServerNodeImpl.class.getName()).log(Level.SEVERE, null, ex);
             } catch (AccessException ex) {
@@ -175,6 +196,43 @@ public class ServerNodeImpl extends UnicastRemoteObject implements ServerNode{
         
         }
         //codigo para eliminar en el dataserver
+        
+        int random = ((NodoArbol)nodo.getUserObject()).getDataServer();
+        System.out.println(random);
+        try {
+            Registry repositorio1;
+            Registry repositorio2;
+            if(random == 0){
+                repositorio1 = LocateRegistry.getRegistry("", 1100);
+                repositorio2 = LocateRegistry.getRegistry("", 1101);
+            }else{
+                repositorio1 = LocateRegistry.getRegistry("", 1102);
+                repositorio2 = LocateRegistry.getRegistry("", 1103);
+            }
+            DataServer mensaje1;
+            DataServer mensaje2;
+            try {
+                if(random == 0){
+                    mensaje1 = (DataServer)repositorio1.lookup("DataServer1");
+                    mensaje1.deleteFile(nombre);
+                    mensaje2 = (DataServer)repositorio2.lookup("ReplicaDataServer1");
+                    mensaje2.deleteFile(nombre);
+                }else{
+                    System.out.println("entra");
+                    mensaje1 = (DataServer)repositorio1.lookup("DataServer2");
+                    mensaje1.deleteFile(nombre);
+                    mensaje2 = (DataServer)repositorio2.lookup("ReplicaDataServer2");
+                    mensaje2.deleteFile(nombre);
+                }
+            } catch (NotBoundException ex) {
+                Logger.getLogger(ServerNodeImpl.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (AccessException ex) {
+                Logger.getLogger(ServerNodeImpl.class.getName()).log(Level.SEVERE, null, ex);
+            }
+                    
+            
+        } catch (RemoteException ex) {        
+        }
        return true;
     }
 

@@ -24,5 +24,5 @@ public interface DataServer extends Remote {
 
     public boolean deleteFile(String name) throws RemoteException;
 
-    public boolean deleteDir(String name) throws RemoteException;
+    
 }

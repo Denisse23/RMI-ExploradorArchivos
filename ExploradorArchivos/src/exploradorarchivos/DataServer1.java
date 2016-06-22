@@ -152,20 +152,7 @@ public class DataServer1 extends UnicastRemoteObject implements DataServer {
         }
     }
 
-    @Override
-    public boolean deleteDir(String name) throws RemoteException {
-        name = directorio.getAbsolutePath() + "\\" + name;
-        File dir = new File(name);
-        if (dir.exists()) {
-            try {
-                delete(dir);
-            } catch (IOException ex) {
-                return false;
-                //Logger.getLogger(DataServer2.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-        return true;
-    }
+    
 
     
 }
